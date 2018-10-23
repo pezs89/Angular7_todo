@@ -1,5 +1,4 @@
-const path = require('path');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
+const helpers = require('./helpers');
 const webpackMerge = require('webpack-merge');
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 const commonConfig = require('./webpack.common');
@@ -8,26 +7,23 @@ const config = {
   mode: 'production',
   devtool: 'source-map',
   output: {
-    path: path.resolve(__dirname, '../dist'),
-    filename: '[name].js'
+    path: helpers.root('dist'),
+    filename: '[name].[chunkhash].bundle.js',
+    sourceMapFilename: '[file].map',
+    chunkFilename: '[name].[chunkhash].chunk.js'
   },
   optimization: {
     minimizer: [
-      new UglifyJsPlugin()
-    ]
-  },
-  plugins: [
-    new HtmlWebpackPlugin({
-      template: './src/index.html',
-      filename: 'index.html',
-      minify: {
-        collapseWhitespace: true,
-        collapseInlineTagWhitespace: true,
-        removeComments: true,
-        removeRedundantAttributes: true
-      }
-    })
-  ]
+      new UglifyJsPlugin({
+        sourceMap: true,
+        parallel: true,
+        cache: helpers.root('webpack-cache/uglify-cache')
+      })
+    ],
+    splitChunks: {
+      chunks: 'all'
+    }
+  }
 }
 
 module.exports = webpackMerge(commonConfig, config);
