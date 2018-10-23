@@ -1,6 +1,6 @@
 const webpack = require('webpack');
 const path = require('path');
-const { AngularCompilerPlugin } = require('@ngtools/webpack');
+const AngularCompilerPlugin = require('@ngtools/webpack').AngularCompilerPlugin;
 const ProgressPlugin = require('webpack/lib/ProgressPlugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
@@ -10,7 +10,8 @@ const helpers = require('./helpers');
 
 const config = {
   entry: {
-    'app': './src/main.ts'
+    'polyfills': './src/polyfills.ts',
+    'main': './src/main.ts'
   },
   resolve: {
     extensions: ['.ts', '.js', '.json']
@@ -75,7 +76,7 @@ const config = {
       cacheGroups: {
         commons: {
           test: /[\\/]node_modules[\\/]/,
-          name: 'vendors',
+          name: 'vendor',
           chunks: 'all'
         }
       }
@@ -110,15 +111,17 @@ const config = {
     new ProgressPlugin(),
     new AngularCompilerPlugin({
       platform: 0,
+      polyfills: './src/polyfills.ts',
       mainPath: './src/main.ts',
+      entryModule: path.join('src', 'app/app.module#AppModule'),
       sourceMap: true,
       tsConfigPath: path.join('', 'tsconfig.json'),
       skipCodeGeneration: true,
     }),
     new WebpackInlineManifestPlugin(),
-    new CopyWebpackPlugin([
-      { from: 'src/assets', to: 'assets' }
-    ])
+    // new CopyWebpackPlugin([
+    //   { from: 'src/assets', to: 'assets' }
+    // ])
   ]
 }
 
