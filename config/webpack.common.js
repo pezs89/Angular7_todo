@@ -10,8 +10,6 @@ const helpers = require('./helpers');
 
 const config = {
   entry: {
-    'polyfills': './src/polyfills.ts',
-    'vendor': './src/vendor.ts',
     'app': './src/main.ts'
   },
   resolve: {
@@ -20,16 +18,9 @@ const config = {
   module: {
     rules: [
       {
-        test: /\.(ts|js)$/,
+        test: /\.ts$/,
         loader: '@ngtools/webpack',
         exclude: [/node_modules/]
-      },
-      {
-        test: /\.(ts|js)$/,
-        loader: '@angular-devkit/build-optimizer/webpack-loader',
-        options: {
-          sourceMap: false
-        }
       },
       {
         test: /(?:\.ngfactory\.js|\.ngstyle\.js|\.ts)$/,
@@ -119,7 +110,7 @@ const config = {
     new ProgressPlugin(),
     new AngularCompilerPlugin({
       platform: 0,
-      entryModule: path.join('src', '/app/app.module#AppModule'),
+      mainPath: './src/main.ts',
       sourceMap: true,
       tsConfigPath: path.join('', 'tsconfig.json'),
       skipCodeGeneration: true,
