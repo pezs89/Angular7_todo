@@ -5,7 +5,6 @@ const ProgressPlugin = require('webpack/lib/ProgressPlugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const WebpackInlineManifestPlugin = require('webpack-inline-manifest-plugin');
-const CopyWebpackPlugin = require('copy-webpack-plugin');
 const helpers = require('./helpers');
 
 const config = {
@@ -14,7 +13,8 @@ const config = {
     'main': './src/main.ts'
   },
   resolve: {
-    extensions: ['.ts', '.js', '.json']
+    extensions: ['.ts', '.js', '.json'],
+    modules: [helpers.root('src'), helpers.root('node_modules')]
   },
   module: {
     rules: [
@@ -104,10 +104,6 @@ const config = {
         }
         : false
     }),
-    new webpack.ContextReplacementPlugin(
-      /\@angular(\\|\/)core(\\|\/)fesm5/,
-      path.resolve(__dirname, 'src'), {}
-    ),
     new ProgressPlugin(),
     new AngularCompilerPlugin({
       platform: 0,
@@ -118,10 +114,7 @@ const config = {
       tsConfigPath: path.join('', 'tsconfig.json'),
       skipCodeGeneration: true,
     }),
-    new WebpackInlineManifestPlugin(),
-    // new CopyWebpackPlugin([
-    //   { from: 'src/assets', to: 'assets' }
-    // ])
+    new WebpackInlineManifestPlugin()
   ]
 }
 
