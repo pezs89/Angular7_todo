@@ -55,6 +55,14 @@ const config = {
         use: [
           'css-hot-loader',
           process.env.NODE_ENV === 'development' ? 'style-loader' : MiniCssExtractPlugin.loader,
+          {
+            loader: 'postcss-loader',
+            options: {
+              plugins: () => [require('autoprefixer')({
+                'browsers': ['last 5 versions']
+              })],
+            }
+          },
           'css-loader',
           'sass-loader',
         ]
