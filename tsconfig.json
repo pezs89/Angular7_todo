@@ -1,46 +1,20 @@
 {
   "compilerOptions": {
     "target": "es5",
-    "module": "commonjs",
     "moduleResolution": "node",
+    "sourceMap": true,
+    "outDir": "./dist",
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
-    "allowSyntheticDefaultImports": true,
-    "sourceMap": true,
-    "noEmit": true,
-    "noEmitHelpers": true,
-    "importHelpers": true,
-    "strictNullChecks": false,
     "lib": [
-      "dom",
-      "es6"
+      "es2017",
+      "dom"
     ],
-    "baseUrl": "./",
-    "paths": {
-      "@angular/*": ["node_modules/@angular/*"]
-    },
-    "typeRoots": [
-      "node_modules/@types"
-    ],
+    "noImplicitAny": true,
+    "suppressImplicitAnyIndexErrors": true,
     "types": [
-      "hammerjs",
-      "jasmine",
-      "node",
-      "uglify-js",
-      "webpack"
-    ]
-  },
-  "exclude": [
-    "node_modules",
-    "dist"
-  ],
-  "awesomeTypescriptLoaderOptions": {
-    "forkChecker": true,
-    "useWebpackText": true
-  },
-  "compileOnSave": false,
-  "buildOnSave": false,
-  "atom": {
-    "rewriteTsconfig": false
+      "node"
+    ],
+    "baseUrl": "."
   }
 }
