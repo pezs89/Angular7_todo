@@ -25,7 +25,7 @@ const config = {
       },
       {
         test: /(?:\.ngfactory\.js|\.ngstyle\.js|\.ts)$/,
-        loader: '@ngtools/webpack'
+        loader: ['@angular-devkit/build-optimizer/webpack-loader', '@ngtools/webpack']
       },
       {
         test: /[\/\\]@angular[\/\\]core[\/\\].+\.js$/,
@@ -51,6 +51,14 @@ const config = {
         use: [
           'css-hot-loader',
           process.env.NODE_ENV === 'development' ? 'style-loader' : MiniCssExtractPlugin.loader,
+          {
+            loader: 'postcss-loader',
+            options: {
+              plugins: () => [require('autoprefixer')({
+                'browsers': ['last 5 versions']
+              })],
+            }
+          },
           'css-loader',
           'sass-loader',
         ]
