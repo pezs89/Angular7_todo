@@ -25,11 +25,7 @@ const config = {
       },
       {
         test: /(?:\.ngfactory\.js|\.ngstyle\.js|\.ts)$/,
-        use: ['@angular-devkit/build-optimizer/webpack-loader', '@ngtools/webpack']
-      },
-      {
-        test: /\.js$/,
-        loader: '@angular-devkit/build-optimizer/webpack-loader'
+        loader: '@ngtools/webpack'
       },
       {
         test: /[\/\\]@angular[\/\\]core[\/\\].+\.js$/,
