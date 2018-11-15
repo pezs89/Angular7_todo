@@ -2,10 +2,11 @@ const webpack = require('webpack');
 const path = require('path');
 const AngularCompilerPlugin = require('@ngtools/webpack').AngularCompilerPlugin;
 const ProgressPlugin = require('webpack/lib/ProgressPlugin');
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const WebpackInlineManifestPlugin = require('webpack-inline-manifest-plugin');
 const helpers = require('./helpers');
+
+const isDevMode = process.env.NODE_ENV !== 'production' ? true : false;
 
 const config = {
   entry: {
@@ -49,17 +50,16 @@ const config = {
         test: /\.(scss|sass)$/,
         exclude: helpers.root('src', 'app'),
         use: [
-          'css-hot-loader',
-          process.env.NODE_ENV === 'development' ? 'style-loader' : MiniCssExtractPlugin.loader,
+          isDevMode ? 'style-loader' : MiniCssExtractPlugin.loader,
+          'css-loader',
           {
             loader: 'postcss-loader',
             options: {
-              plugins: () => [require('autoprefixer')({
-                'browsers': ['last 5 versions']
-              })],
-            }
+              config: {
+                path: __dirname + '/postcss.config.js'
+              }
+            },
           },
-          'css-loader',
           'sass-loader',
         ]
       },
@@ -79,21 +79,7 @@ const config = {
         ]
       }]
   },
-  optimization: {
-    splitChunks: {
-      cacheGroups: {
-        commons: {
-          test: /[\\/]node_modules[\\/]/,
-          name: 'vendor',
-          chunks: 'all'
-        }
-      }
-    }
-  },
   plugins: [
-    new MiniCssExtractPlugin({
-      filename: '[name].[hash].css',
-    }),
     new HtmlWebpackPlugin({
       template: './src/index.html',
       filename: 'index.html',
@@ -103,8 +89,8 @@ const config = {
       },
       inject: 'body',
       xhtml: true,
-      minify: process.env.NODE_ENV === 'production'
-        ? {
+      minify: isDevMode ?
+        {
           collapseWhitespace: true,
           collapseInlineTagWhitespace: true,
           removeComments: true,
@@ -122,7 +108,12 @@ const config = {
       tsConfigPath: path.join('', 'tsconfig.json'),
       skipCodeGeneration: true,
     }),
-    new WebpackInlineManifestPlugin()
+    new WebpackInlineManifestPlugin(),
+    new webpack.ContextReplacementPlugin(
+      /angular(\\|\/)core/,
+      path.join(__dirname, '../src'),
+      {}
+    )
   ]
 }
 

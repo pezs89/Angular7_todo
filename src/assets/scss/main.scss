@@ -1,4 +1,17 @@
+html {
+  height: 100%;
+}
+
 body {
+    height: 100%;
+    margin: 0;
     background-image: url('../images/angular.png');
-    background-size: cover;
+    background-size: initial;
+    background-repeat: no-repeat;
+    background-position: center;
+    transition: all 0.2s ease-in-out;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  margin: 0;
 }
