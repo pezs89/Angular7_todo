@@ -14,6 +14,10 @@ const routes: Routes = [
     {
         path: 'dummy',
         loadChildren: './dummy/dummy.module#DummyModule'
+    },
+    {
+      path: '**',
+      redirectTo: ''
     }
 ];
 

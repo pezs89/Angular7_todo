@@ -1,0 +1,7 @@
+{
+  "name": "webpack-starter",
+  "short_name": "webpack-starter",
+  "scope": "/",
+  "start_url": "/",
+  "display": "standalone"
+}

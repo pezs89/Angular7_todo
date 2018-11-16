@@ -4,7 +4,7 @@ const AngularCompilerPlugin = require('@ngtools/webpack').AngularCompilerPlugin;
 const ProgressPlugin = require('webpack/lib/ProgressPlugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const WebpackInlineManifestPlugin = require('webpack-inline-manifest-plugin');
-const helpers = require('./helpers');
+var helpers = require('./helpers');
 
 const isDevMode = process.env.NODE_ENV !== 'production' ? true : false;
 
@@ -22,11 +22,16 @@ const config = {
       {
         test: /\.ts$/,
         loader: '@ngtools/webpack',
-        exclude: [/node_modules/]
+        exclude: [/\.(spec|e2e)\.ts$/, /node_modules/],
       },
       {
         test: /(?:\.ngfactory\.js|\.ngstyle\.js|\.ts)$/,
         loader: ['@angular-devkit/build-optimizer/webpack-loader', '@ngtools/webpack']
+      },
+      {
+        test: /\.ts$/,
+        loader: 'null-loader',
+        include: [/\.(spec|e2e)\.ts$/],
       },
       {
         test: /[\/\\]@angular[\/\\]core[\/\\].+\.js$/,
@@ -45,23 +50,6 @@ const config = {
           context: helpers.root('src', 'assets'),
           name: '[path][name].[ext]'
         },
-      },
-      {
-        test: /\.(scss|sass)$/,
-        exclude: helpers.root('src', 'app'),
-        use: [
-          isDevMode ? 'style-loader' : MiniCssExtractPlugin.loader,
-          'css-loader',
-          {
-            loader: 'postcss-loader',
-            options: {
-              config: {
-                path: __dirname + '/postcss.config.js'
-              }
-            },
-          },
-          'sass-loader',
-        ]
       },
       {
         test: /\.(css|scss)$/,
@@ -83,8 +71,9 @@ const config = {
     new HtmlWebpackPlugin({
       template: './src/index.html',
       filename: 'index.html',
+      favicon: './src/assets/images/favicon-pencil.ico',
       chunksSortMode: (a, b) => {
-        const entryPoints = ['inline', 'polyfills', 'sw-register', 'styles', 'vendor', 'main'];
+        const entryPoints = ['polyfills', 'vendor', 'main'];
         return entryPoints.indexOf(a.names[0]) - entryPoints.indexOf(b.names[0]);
       },
       inject: 'body',
