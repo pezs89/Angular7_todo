@@ -94,7 +94,7 @@ const config = {
       mainPath: './src/main.ts',
       entryModule: path.join('src', 'app/app.module#AppModule'),
       sourceMap: true,
-      tsConfigPath: path.join('', 'tsconfig.json'),
+      tsConfigPath: path.join('src', 'tsconfig.app.json'),
       skipCodeGeneration: true,
     }),
     new WebpackInlineManifestPlugin(),
