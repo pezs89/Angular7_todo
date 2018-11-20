@@ -6,7 +6,7 @@
   "scripts": {
     "ng": "ng",
     "start": "webpack-dev-server --inline --progress --hot --config config/webpack.dev.js",
-    "build": "npm run build:aot:prod",
+    "build": "ng test && npm run build:aot:prod",
     "build:aot:prod": "rimraf dist compiled && cross-env BUILD_AOT=1 SOURCE_MAP=0 npm run webpack -- --config config/webpack.prod.js --progress --profile --bail",
     "webpack": "node --max-old-space-size=8192 node_modules/webpack/bin/webpack.js",
     "fake-server": "node config/server.js",
